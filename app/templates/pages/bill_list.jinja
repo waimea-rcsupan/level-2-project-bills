@@ -7,23 +7,23 @@
 
 {% block content %}
 
-    <h2>Notes</h2>
+    <h2>Bills</h2>
 
-    <section id="notes">
+    <section id="bills">
 
-        {% for note in notes %}
+        {% for bill in bills %}
 
-            <div class="note {{ 'pinned' if note.pinned }}">
+            <div class="bill {{ 'pinned' if bill.pinned }}">
 
                 <header>
-                    <h3>{{ note.title }}</h3>
-                    {{ "📌" if note.pinned }}
+                    <h3>{{ bill.title }}</h3>
+                    {{ "📌" if bill.pinned }}
                 </header>
 
-                <p>{{ note.body | paragraphs }}</p>
+                <p>{{ bill.body | paragraphs }}</p>
 
                 <footer>
-                    Created on {{ note.created | local | format }}
+                    Created on {{ bill.created | local | format }}
                 </footer>
 
             </div>

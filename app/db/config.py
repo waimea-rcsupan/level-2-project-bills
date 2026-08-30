@@ -17,10 +17,10 @@
 
 class NoteTable:
 
-    NAME = "note"
+    NAME = "bill"
 
     SCHEMA = """
-        CREATE TABLE note (
+        CREATE TABLE bill (
             id      INTEGER PRIMARY KEY AUTOINCREMENT,
             title   TEXT NOT NULL,
             body    TEXT,

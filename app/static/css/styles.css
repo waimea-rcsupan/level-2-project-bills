@@ -46,6 +46,7 @@ body > header {
     justify-content: space-between;
     padding: 1rem;
 
+
     nav {
         display: flex;
         gap: 1rem;
@@ -66,9 +67,9 @@ main > h2 {
 }
 
 
-/* Notes --------------------------------------------------*/
+/* Bills --------------------------------------------------*/
 
-#notes {
+#bills {
     display: grid;
     gap: 2rem;
     grid-template-columns: repeat(auto-fit, minmax(min(15rem, 100%), 1fr));

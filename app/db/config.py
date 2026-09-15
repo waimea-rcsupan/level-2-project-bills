@@ -15,7 +15,7 @@
 #     SEED_DATA = "INSERT INTO name (...)" or None
 #----------------------------------------------------------------------------
 
-class NoteTable:
+class BillTable:
 
     NAME = "bill"
 
@@ -30,7 +30,7 @@ class NoteTable:
     """
 
     SEED_DATA = """
-        INSERT INTO note (title, pinned, body)
+        INSERT INTO bill (title, pinned, body)
         VALUES
             ("Welcome!",      1, "This is a demo application using Flask, Jinja and SQLite."),
             ("Shopping List", 0, "Milk\nBread\nEggs\nCheese"),
@@ -59,7 +59,7 @@ class NoteTable:
 #----------------------------------------------------------------------------
 
 TABLES = [
-    NoteTable,
+    BillTable,
     # Add more tables here...
 ]
 

@@ -6,8 +6,8 @@
 :root {
     --text-col:         #111;
 
-    --back-col:         #eee;
-    --back-col-panel:   #fff;
+    --back-col:         #89cfef;
+    --back-col-panel:   #89cfef;
 
     --border-col:       #355;
 
@@ -44,16 +44,30 @@ body > header {
     gap: 1rem;
     align-items: center;
     justify-content: space-between;
-    padding: 1rem;
+    background-color: #1134a6;
+    padding: 40px;
+    text-align: center;
+    color: #ffffff;
 
+
+    a {
+        color: wheat;
+        text-decoration: none;
+        transition: color 0.2s ease;
+
+        &:hover {
+            color: #ffffff;
+            text-decoration: underline;
+        }
+
+        &:active {
+            color: #f1c40f;
+        }
+    }
 
     nav {
         display: flex;
         gap: 1rem;
-
-        a {
-            color: var(--accent-col);
-        }
     }
 }
 
@@ -75,11 +89,12 @@ main > h2 {
     grid-template-columns: repeat(auto-fit, minmax(min(15rem, 100%), 1fr));
     align-items: start;
 
-    .note {
+    .bill {
         padding: 1rem;
         box-shadow: 0 0.5rem 1rem #0004;
-        border: 1px solid var(--border-col);
+        border: 2px solid var(--border-col);
         background-color: var(--back-col-panel);
+        border-radius: 0.5rem ;
 
         header {
             display: flex;

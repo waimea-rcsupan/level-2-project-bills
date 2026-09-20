@@ -24,16 +24,19 @@
 
 <body>
 
-    <header>
-        <a href="/">
-            Home - Categories
-        </a>
+   <header>
+    <div class="logo">
+        <a href="/"><img src="static/images/bill-logo.png" alt="Company Logo"></a>
+    </div>
 
-        <nav>
-            <a href="/">All Bills</a>
-            <a href="/">Add Bills</a>
-        </nav>
-    </header> 
+    <nav>
+        <ul class="nav-links">
+            <li><a href="/">Bills</a></li>
+            <li><a href="/">Add Bills</a></li>
+            <li class="nav-balance">Balance: <span>$125.00</span></li>
+        </ul>
+    </nav>  
+   </header>
 
     {# Show flash messages from any previous events #}
     {% include "partials/messages.jinja" %}

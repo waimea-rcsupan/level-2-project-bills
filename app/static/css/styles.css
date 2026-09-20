@@ -6,8 +6,8 @@
 :root {
     --text-col:         #111;
 
-    --back-col:         #89cfef;
-    --back-col-panel:   #89cfef;
+    --back-col:         #ffffff;
+    --back-col-panel:   #ffffff;
 
     --border-col:       #355;
 
@@ -45,7 +45,7 @@ body > header {
     align-items: center;
     justify-content: space-between;
     background-color: #1134a6;
-    padding: 40px;
+    padding: 15px;
     text-align: center;
     color: #ffffff;
 
@@ -69,6 +69,14 @@ body > header {
         display: flex;
         gap: 1rem;
     }
+}
+.nav-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 1.5rem;  
+    align-items: center;   
 }
 
 
@@ -113,3 +121,10 @@ main > h2 {
     }
 }
 
+/* Logos --------------------------------------------------*/
+
+.logo img {
+    height: 100px;       
+    width: auto;        
+    display: block;  
+}

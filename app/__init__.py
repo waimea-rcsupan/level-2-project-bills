@@ -7,6 +7,7 @@ from flask import Flask, request, session, render_template, flash, redirect, sen
 from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import load_dotenv
 
+
 from os import getenv
 from io import BytesIO
 import html

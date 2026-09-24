@@ -4,7 +4,7 @@
 ===========================================================*/
 
 :root {
-    --text-col:         #111;
+    --text-col:         #000000;
 
     --back-col:         #ffffff;
     --back-col-panel:   #ffffff;
@@ -48,6 +48,7 @@ body > header {
     padding: 15px;
     text-align: center;
     color: #ffffff;
+    box-shadow: 0 0.5rem 1rem #0004;
 
 
     a {

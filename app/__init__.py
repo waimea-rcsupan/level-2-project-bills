@@ -46,14 +46,17 @@ def add_bill():
     if request.method == "POST":
         title = html.escape(request.form.get("title", "").strip())
         body = html.escape(request.form.get("body", "").strip())
+
+        # If the checkbox is checked, pinned = 1; otherwise pinned = 0
+        pinned = 1 if request.form.get("pinned") else 0
         
         if not title:
             flash("Title is required!", "error")
             return redirect("/bill/add")
 
         with connect_db() as db:
-            sql = "INSERT INTO note (title, body) VALUES (?, ?)"
-            db.execute(sql, (title, body))
+            sql = "INSERT INTO note (title, body, pinned) VALUES (?, ?, ?)"
+            db.execute(sql, (title, body, pinned))
             db.commit()
             
         flash("Bill added successfully!", "success")

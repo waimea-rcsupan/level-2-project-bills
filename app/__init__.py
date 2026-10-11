@@ -47,7 +47,6 @@ def add_bill():
         title = html.escape(request.form.get("title", "").strip())
         body = html.escape(request.form.get("body", "").strip())
 
-        # If the checkbox is checked, pinned = 1; otherwise pinned = 0
         pinned = 1 if request.form.get("pinned") else 0
         
         if not title:

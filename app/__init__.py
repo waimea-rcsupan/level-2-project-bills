@@ -23,29 +23,44 @@ app = Flask(__name__)
 #===========================================================
 
 #-----------------------------------------------------------
-# Home page - Show all Bills
+# Home page - Show all Bills with Secure Python Formatting
 #-----------------------------------------------------------
 @app.get("/")
 def show_bills():
     with connect_db() as db:
         sql = """
-            SELECT id, title, body, pinned, created
-            FROM note
+            SELECT id, title, body, pinned, created, price
+            FROM bill
             ORDER BY pinned DESC, created DESC
         """
         params = ()
-        bills = db.execute(sql, params).fetchall()
+        raw_bills = db.execute(sql, params).fetchall()
+        
+        # Convert dictionary formats to allow customized string attributes
+        bills = []
+        for b in raw_bills:
+            bill_dict = dict(b)
+            # Safe numeric to currency string mapping
+            price_val = bill_dict.get('price') if bill_dict.get('price') is not none else 0.00
+            bill_dict['display_price'] = f"{price_val:.2f}"
+            bills.append(bill_dict)
 
         return render_template("pages/bill_list.jinja", bills=bills)
+
     
 #-----------------------------------------------------------
-# Add a new Bill - Add new Bills
+# Add a new Bill - Add new Bills with custom balance
 #-----------------------------------------------------------
 @app.route("/bill/add", methods=["GET", "POST"])
 def add_bill():
     if request.method == "POST":
         title = html.escape(request.form.get("title", "").strip())
         body = html.escape(request.form.get("body", "").strip())
+        
+        try:
+            price = float(request.form.get("price", 0.0))
+        except ValueError:
+            price = 0.0
 
         pinned = 1 if request.form.get("pinned") else 0
         
@@ -54,8 +69,9 @@ def add_bill():
             return redirect("/bill/add")
 
         with connect_db() as db:
-            sql = "INSERT INTO note (title, body, pinned) VALUES (?, ?, ?)"
-            db.execute(sql, (title, body, pinned))
+            # FIXED: Switched target source table from 'note' to 'bill'
+            sql = "INSERT INTO bill (title, body, pinned, price) VALUES (?, ?, ?, ?)"
+            db.execute(sql, (title, body, pinned, price))
             db.commit()
             
         flash("Bill added successfully!", "success")
@@ -64,7 +80,7 @@ def add_bill():
     return render_template("pages/bill_form.jinja", bill=None)
 
 #-----------------------------------------------------------
-# Edit an existing Bill
+# Edit an existing Bill - Modify structural amounts
 #-----------------------------------------------------------
 @app.route("/bill/edit/<int:bill_id>", methods=["GET", "POST"])
 def edit_bill(bill_id):
@@ -72,24 +88,27 @@ def edit_bill(bill_id):
         if request.method == "POST":
             title = html.escape(request.form.get("title", "").strip())
             body = html.escape(request.form.get("body", "").strip())
-            
-            # If the checkbox is checked, it will equal "1". If unchecked, it will be 0.
             pinned = 1 if request.form.get("pinned") else 0
+            
+            try:
+                price = float(request.form.get("price", 0.0))
+            except ValueError:
+                price = 0.0
             
             if not title:
                 flash("Title is required!", "error")
                 return redirect(f"/bill/edit/{bill_id}")
 
-            # Update the statement to include pinned
-            sql = "UPDATE note SET title = ?, body = ?, pinned = ? WHERE id = ?"
-            db.execute(sql, (title, body, pinned, bill_id))
+            # FIXED: Switched target source table from 'note' to 'bill'
+            sql = "UPDATE bill SET title = ?, body = ?, pinned = ?, price = ? WHERE id = ?"
+            db.execute(sql, (title, body, pinned, price, bill_id))
             db.commit()
             
             flash("Bill updated successfully!", "success")
             return redirect("/")
             
-        # GET request: Fetch existing row data to pre-populate fields
-        sql = "SELECT id, title, body, pinned FROM note WHERE id = ?"
+        # FIXED: Switched target source table from 'note' to 'bill'
+        sql = "SELECT id, title, body, pinned, price FROM bill WHERE id = ?"
         bill = db.execute(sql, (bill_id,)).fetchone()
         
         if not bill:
@@ -105,11 +124,31 @@ def edit_bill(bill_id):
 @app.post("/bill/delete/<int:bill_id>")
 def delete_bill(bill_id):
     with connect_db() as db:
-        sql = "DELETE FROM note WHERE id = ?"
+        # FIXED: Switched target source table from 'note' to 'bill'
+        sql = "DELETE FROM bill WHERE id = ?"
         db.execute(sql, (bill_id,))
         db.commit()
         
     flash("Bill deleted successfully!", "success")
+    return redirect("/")
+
+#-----------------------------------------------------------
+# Edit Balance / Amount directly 
+#-----------------------------------------------------------
+@app.post("/bill/balance/<int:bill_id>")
+def edit_balance(bill_id):  
+    try:
+        price = float(request.form.get("price", 0.0))
+    except ValueError:
+        price = 0.0
+
+    with connect_db() as db:
+        # FIXED: Switched target source table from 'note' to 'bill'
+        sql = "UPDATE bill SET price = ? WHERE id = ?"
+        db.execute(sql, (price, bill_id))
+        db.commit()
+
+    flash("Balance updated successfully!", "success")
     return redirect("/")
 
 #===========================================================
@@ -123,4 +162,3 @@ init_date_filters(app)
 init_error_handlers(app)
 init_database()
 register_commands(app)
-

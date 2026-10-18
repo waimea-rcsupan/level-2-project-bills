@@ -19,24 +19,27 @@ class BillTable:
 
     NAME = "bill"
 
+    # FIXED: Added the real price tracking column right inside your layout
     SCHEMA = """
         CREATE TABLE bill (
             id      INTEGER PRIMARY KEY AUTOINCREMENT,
             title   TEXT NOT NULL,
             body    TEXT,
             pinned  INTEGER DEFAULT 0,
-            created TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            price   REAL DEFAULT 0.00
         )
     """
 
+    # FIXED: Updated sample columns and seeds to populate with sample dollar amounts!
     SEED_DATA = """
-        INSERT INTO bill (title, pinned, body)
+        INSERT INTO bill (title, pinned, body, price)
         VALUES
-            ("Welcome!",      1, "This is a demo application using Flask, Jinja and SQLite."),
-            ("Shopping List", 0, "Milk\nBread\nEggs\nCheese"),
-            ("Meeting Notes", 0, "Discussed project timeline.\n\nAction items:\n- Review design\n- Update docs"),
-            ("Recipe: Pasta", 0, "Ingredients:\n- 500g pasta\n- Tomato sauce\n- Garlic\n\nCook pasta, add sauce, enjoy!"),
-            ("Important!",    1, "Remember to backup your database regularly.")
+            ("Welcome!",      1, "This is a demo application using Flask, Jinja and SQLite.", 0.00),
+            ("Shopping List", 0, "Milk\nBread\nEggs\nCheese", 42.50),
+            ("Power Bill",    0, "Due next week.\n\nAccount: 123-45678-90", 185.20),
+            ("Internet",      0, "Monthly fibre connection subscription plan fee.", 89.00),
+            ("Important!",    1, "Remember to backup your database regularly.", 0.00)
     """
 
 # Add more table classes here...
@@ -62,4 +65,3 @@ TABLES = [
     BillTable,
     # Add more tables here...
 ]
-

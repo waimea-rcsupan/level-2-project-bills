@@ -23,7 +23,7 @@ app = Flask(__name__)
 #===========================================================
 
 #-----------------------------------------------------------
-# Home page - Show all Bills with Secure Python Formatting
+# Home page - Home
 #-----------------------------------------------------------
 @app.get("/")
 def show_bills():
@@ -36,20 +36,19 @@ def show_bills():
         params = ()
         raw_bills = db.execute(sql, params).fetchall()
         
-        # Convert dictionary formats to allow customized string attributes
+     
         bills = []
         for b in raw_bills:
             bill_dict = dict(b)
-            # Safe numeric to currency string mapping
-            price_val = bill_dict.get('price') if bill_dict.get('price') is not none else 0.00
+            
+            price_val = bill_dict.get('price') if bill_dict.get('price') is not None else 0.00
             bill_dict['display_price'] = f"{price_val:.2f}"
             bills.append(bill_dict)
 
         return render_template("pages/bill_list.jinja", bills=bills)
-
     
 #-----------------------------------------------------------
-# Add a new Bill - Add new Bills with custom balance
+# Add a new Bill - Add new Bills
 #-----------------------------------------------------------
 @app.route("/bill/add", methods=["GET", "POST"])
 def add_bill():
@@ -69,7 +68,7 @@ def add_bill():
             return redirect("/bill/add")
 
         with connect_db() as db:
-            # FIXED: Switched target source table from 'note' to 'bill'
+
             sql = "INSERT INTO bill (title, body, pinned, price) VALUES (?, ?, ?, ?)"
             db.execute(sql, (title, body, pinned, price))
             db.commit()
@@ -99,7 +98,7 @@ def edit_bill(bill_id):
                 flash("Title is required!", "error")
                 return redirect(f"/bill/edit/{bill_id}")
 
-            # FIXED: Switched target source table from 'note' to 'bill'
+            
             sql = "UPDATE bill SET title = ?, body = ?, pinned = ?, price = ? WHERE id = ?"
             db.execute(sql, (title, body, pinned, price, bill_id))
             db.commit()
@@ -107,7 +106,7 @@ def edit_bill(bill_id):
             flash("Bill updated successfully!", "success")
             return redirect("/")
             
-        # FIXED: Switched target source table from 'note' to 'bill'
+        
         sql = "SELECT id, title, body, pinned, price FROM bill WHERE id = ?"
         bill = db.execute(sql, (bill_id,)).fetchone()
         
@@ -124,7 +123,7 @@ def edit_bill(bill_id):
 @app.post("/bill/delete/<int:bill_id>")
 def delete_bill(bill_id):
     with connect_db() as db:
-        # FIXED: Switched target source table from 'note' to 'bill'
+        
         sql = "DELETE FROM bill WHERE id = ?"
         db.execute(sql, (bill_id,))
         db.commit()
@@ -143,7 +142,7 @@ def edit_balance(bill_id):
         price = 0.0
 
     with connect_db() as db:
-        # FIXED: Switched target source table from 'note' to 'bill'
+        
         sql = "UPDATE bill SET price = ? WHERE id = ?"
         db.execute(sql, (price, bill_id))
         db.commit()

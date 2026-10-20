@@ -1,13 +1,44 @@
-{#=====================================================
-  Home page
-=====================================================#}
-
 {% extends 'pages/_base.jinja' %}
-
 
 {% block content %}
 
     <h2>Bills</h2>
+
+    <div class="budget-dashboard" style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 15px; margin-bottom: 25px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 15px;">
+        
+        <div style="display: flex; gap: 20px;">
+            <div>
+                <span style="font-size: 0.85rem; color: #64748b; display: block; text-transform: uppercase; font-weight: bold;">Total Budget Max:</span>
+                <strong style="font-size: 1.25rem; color: #1e293b;">${{ budget_limit if budget_limit is defined else '0.00' }}</strong>
+            </div>
+            <div>
+                <span style="font-size: 0.85rem; color: #64748b; display: block; text-transform: uppercase; font-weight: bold;">Total Active Bills:</span>
+                <strong style="font-size: 1.25rem; color: #e11d48;">${{ total_balance if total_balance is defined else '0.00' }}</strong>
+            </div>
+            <div>
+                <span style="font-size: 0.85rem; color: #64748b; display: block; text-transform: uppercase; font-weight: bold;">Leftover Remaining:</span>
+                <strong style="font-size: 1.25rem; color: {{ '#16a34a' if (remaining_budget | float) >= 0 else '#dc2626' if remaining_budget is defined else '#1e293b' }};">
+                    ${{ remaining_budget if remaining_budget is defined else '0.00' }}
+                </strong>
+            </div>
+        </div>
+
+        <form action="/budget/update" method="POST" style="display: flex; gap: 8px; align-items: center; margin: 0;">
+            <label for="budget_limit" style="font-size: 0.9rem; font-weight: bold; color: #1e293b;">Set Income Limit:</label>
+            <input 
+                type="number" 
+                id="budget_limit" 
+                name="budget_limit" 
+                step="0.01" 
+                placeholder="1000.00" 
+                value="{{ budget_limit if budget_limit is defined else '' }}"
+                style="padding: 6px 10px; width: 110px; border: 1px solid #cbd5e1; border-radius: 4px; background: white; color: black;"
+            >
+            <button type="submit" style="background-color: #1134a6; color: white; border: none; padding: 6px 12px; border-radius: 4px; font-size: 0.9rem; cursor: pointer; font-weight: bold;">
+                Update
+            </button>
+        </form>
+    </div>
 
     <section id="bills">
 
@@ -22,26 +53,28 @@
 
                 <p>{{ bill.body | paragraphs }}</p>
 
-                <!-- FIXED: Safely displaying price values without using conflicting format filters -->
                 <div class="bill-amount" style="margin: 10px 0; font-size: 1.1em; font-weight: bold; color: #2e4a3f;">
                     Amount: ${{ bill.display_price }}
                 </div>
 
                 <footer>
+                    {% if bill.due_date %}
+                        <div class="bill-due" style="margin-bottom: 5px; color: #b45309; font-weight: bold;">
+                            📅 Due: {{ bill.due_date }}
+                        </div>
+                    {% endif %}
+                    
                     <span>Created on {{ bill.created | local | format }}</span>
                     
-                    <!-- Action Buttons -->
                     <div class="bill-actions" 
                     style="margin-top: 10px;
                     display: 
                     flex; 
                     gap: 10px;">
 
-                        <!-- Edit Button -->
                         <a href="/bill/edit/{{ bill.id }}" class="btn-edit" 
                         style="text-decoration: none;">✏️ Edit</a>
                             
-                        <!-- Delete Button (Wrapped in a form for POST security) -->
                         <form action="/bill/delete/{{ bill.id }}" 
                         method="POST" 
                         style="display:inline;" 

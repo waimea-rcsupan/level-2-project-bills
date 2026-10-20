@@ -1,6 +1,3 @@
-{#=====================================================
-  Add / Edit Bill Dynamic Form Template
-=====================================================#}
 {% extends 'pages/_base.jinja' %}
 
 {% block title %}
@@ -45,6 +42,17 @@
                 min="0"
                 placeholder="0.00"
                 value="{{ bill.price if bill and bill.price is not none else '' }}" 
+                style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
+            >
+        </div>
+
+        <div class="form-group" style="display: flex; flex-direction: column; gap: 5px;">
+            <label for="due_date" style="font-weight: bold;">Due Date</label>
+            <input 
+                type="date" 
+                id="due_date" 
+                name="due_date" 
+                value="{{ bill.due_date if bill and bill.due_date else '' }}" 
                 style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
             >
         </div>

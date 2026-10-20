@@ -4,13 +4,19 @@ by Raven Supan
 
 ## Project Description
 
-This is an app that ...
+This is an app that You can manage your bills in to.
 
 The app has the following key features:
-- Feature one
-- Feature two
-- Feature three
+- Notes The bills
+- Shows how much the bill costs
+- you can add when it is due
 - ...
+
+## Live Site
+
+https://level-2-project-bills.onrender.com
+
+
 
 
 ## Supporting Documents
@@ -26,19 +32,7 @@ Project Evidence
 - [Review: Project Final Review](docs/evidence/system-review.md)
 
 
-## Test Accounts
 
-The following user accounts have been created to demonstrate the features of the system:
-
-Test User 1:
-- Username: xxxxx
-- Password: xxxxx
-
-Test User 2:
-- Username: xxxxx
-- Password: xxxxx
-
-...
 
 
 ## Technologies Used

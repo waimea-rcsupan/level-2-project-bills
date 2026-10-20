@@ -1,8 +1,3 @@
-{#=====================================================
-  Base template
-  - Used as the basis of all pages
-=====================================================#}
-
 <!DOCTYPE html>
 
 <html lang="en" data-theme="light">
@@ -32,12 +27,11 @@
     <nav>
         <ul class="nav-links">
             <li><a href="/bill/add">Add Bills</a></li>
-            <li class="nav-balance">Balance:<a href="/"> <span>$0.00</span></a></li>
+            <li class="nav-balance">Remaining Budget:<a href="/"> <span>${{ remaining_budget if remaining_budget is defined else '0.00' }}</span></a></li>
         </ul>
     </nav>  
    </header>
 
-    {# Show flash messages from any previous events #}
     {% include "partials/messages.jinja" %}
 
     <main>
@@ -50,4 +44,3 @@
 </body>
 
 </html>
-

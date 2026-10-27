@@ -28,23 +28,23 @@ The table are then added to the `TABLES` **table registry list**, one row per ta
 
 ```python
 TABLES = [
-    NoteTable,
+    billTable,
     UserTable,
     ...
 ]
 ```
 
-*Note that the order is important - Create the tables that have foreign keys **after** the linked table has been created*
+*bill that the order is important - Create the tables that have foreign keys **after** the linked table has been created*
 
 
 ## Example Database Schema
 
 ### Schema for a Single Table
 
-**Notes** table:
+**bills** table:
 
 ```sql
-CREATE TABLE notes (
+CREATE TABLE bills (
     id      INTEGER PRIMARY KEY AUTOINCREMENT,
     title   TEXT NOT NULL,
     body    TEXT,
@@ -69,10 +69,10 @@ CREATE TABLE users (
 )
 ```
 
-**Notes** table with **foreign-key linking to user:**
+**bills** table with **foreign-key linking to user:**
 
 ```sql
-CREATE TABLE notes (
+CREATE TABLE bills (
     id      INTEGER PRIMARY KEY AUTOINCREMENT,
     title   TEXT NOT NULL,
     body    TEXT,
@@ -138,29 +138,29 @@ INSERT INTO users (forename, surname, username, pass_hash)
 VALUES ("Test", "User", "test", "scrypt:32768:8:1$n7eJTucLbaGmUpAM$c1776374a8d456a6eaf61bccc08db5e1fcc4ff3b3983d364c45ab13074255eeae0a393afb11f99a9fe63fb1d980992ace17a72ba70324523b11e92e36cbe4252")
 ```
 
-**Notes table seeding:**
+**bills table seeding:**
 
 ```sql
-INSERT INTO notes (title, body, pinned, user_id)
+INSERT INTO bills (title, body, pinned, user_id)
 VALUES ("Welcome!",        "This is a demo application", 1, 1),
        ("Getting Started", "Use this template to start", 1, 1),
-       ("Pinned Note",     "Pinned notes appear at top", 1, 1),
-       ("Sample Note",     "This is just a sample note", 0, 1),
-       ("Sample Note",     "This is just a sample note", 0, 1),
-       ("Sample Note",     "This is just a sample note", 0, 1)
+       ("Pinned bill",     "Pinned bills appear at top", 1, 1),
+       ("Sample bill",     "This is just a sample bill", 0, 1),
+       ("Sample bill",     "This is just a sample bill", 0, 1),
+       ("Sample bill",     "This is just a sample bill", 0, 1)
 ```
 
-*Note that in this example, the 'test' user password is 'test'. This is a genuine hash of the password - So, you can use this to seed a user account.*
+*bill that in this example, the 'test' user password is 'test'. This is a genuine hash of the password - So, you can use this to seed a user account.*
 
 
 ## Tips
 
 ### Table Naming
 
-The general convention is that tables should be named using **plural** names, so a table that hold notes should be called 'notes'. This makes queries read a bit more awkwardly, but you get used to it:
+The general convention is that tables should be named using **plural** names, so a table that hold bills should be called 'bills'. This makes queries read a bit more awkwardly, but you get used to it:
 
-- `notes.id`
-- `notes.title`
+- `bills.id`
+- `bills.title`
 - etc.
 
 ### Database Management Commands

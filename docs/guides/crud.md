@@ -8,7 +8,7 @@ A simple Flask / SQLite / Jinja app with routes to: **C**reate, **R**ead, **U**p
 ### DB Schema
 
 ```SQL
-CREATE TABLE notes (
+CREATE TABLE bills (
     id      INTEGER PRIMARY KEY AUTOINCREMENT,
     title   TEXT NOT NULL,
     body    TEXT,
@@ -21,72 +21,72 @@ CREATE TABLE notes (
 
 | Method | Route                   | Description           |
 | ------ | ----------------------- | --------------------- |
-| `GET`  | `/`                     | list all notes (home) |
-| `GET`  | `/note/<int:id>`        | show a single note    |
-| `GET`  | `/note/new`             | new note form         |
-| `POST` | `/note`                 | add a new note        |
-| `GET`  | `/note/<int:id>/edit`   | not edit form         |
-| `POST` | `/note/<int:id>`        | update a note         |
-| `GET`  | `/note/<int:id>/delete` | delete a note         |
+| `GET`  | `/`                     | list all bills (home) |
+| `GET`  | `/bill/<int:id>`        | show a single bill    |
+| `GET`  | `/bill/new`             | new bill form         |
+| `POST` | `/bill`                 | add a new bill        |
+| `GET`  | `/bill/<int:id>/edit`   | not edit form         |
+| `POST` | `/bill/<int:id>`        | update a bill         |
+| `GET`  | `/bill/<int:id>/delete` | delete a bill         |
 
 
 ### App Templates
 
 | Name                   | Data Needed | Description                  |
 | ---------------------- | ----------- | ---------------------------- |
-| `note_list.jinja`      | `notes[]`   | Show a list of all notes     |
-| `note_single.jinja`    | `note`      | Show a single note in detail |
-| `note_form.jinja`      |             | Show a new note form         |
-| `note_form_edit.jinja` | `note`      | Show a note edit form        |
+| `bill_list.jinja`      | `bills[]`   | Show a list of all bills     |
+| `bill_single.jinja`    | `bill`      | Show a single bill in detail |
+| `bill_form.jinja`      |             | Show a new bill form         |
+| `bill_form_edit.jinja` | `bill`      | Show a bill edit form        |
 
 
 ## Routes and Handlers
 
-### Reading Notes
+### Reading bills
 
 ```python
-# Show all notes -------------------------------------------
+# Show all bills -------------------------------------------
 @app.get("/")
-def show_notes():
+def show_bills():
     with connect_db() as db:
         sql = """
             SELECT id, title, body, pinned, created
-            FROM notes
+            FROM bills
             ORDER BY pinned DESC, created DESC
         """
         params = ()
-        notes = db.execute(sql, params).fetchall()
+        bills = db.execute(sql, params).fetchall()
 
-        return render_template("pages/note_list.jinja", notes=notes)
+        return render_template("pages/bill_list.jinja", bills=bills)
 
 
-# Show a single note ----------------------------------------
-@app.get("/note/<int:id>")
-def show_a_note(id):
+# Show a single bill ----------------------------------------
+@app.get("/bill/<int:id>")
+def show_a_bill(id):
     with connect_db() as db:
         sql = """
             SELECT id, title, body, pinned, created
-            FROM notes
+            FROM bills
             WHERE id=?
         """
         params = (id,)
-        note = db.execute(sql, params).fetchone()
+        bill = db.execute(sql, params).fetchone()
 
-        return render_template("pages/note_single.jinja", note=note)
+        return render_template("pages/bill_single.jinja", bill=bill)
 ```
 
-### Creating Notes
+### Creating bills
 
 ```python
-# Show new note form ----------------------------------------
-@app.get("/note/new")
-def show_note_form():
-    return render_template("pages/note_form.jinja")
+# Show new bill form ----------------------------------------
+@app.get("/bill/new")
+def show_bill_form():
+    return render_template("pages/bill_form.jinja")
 
 
-# Process new note ------------------------------------------
-@app.post("/note")
-def add_a_note():
+# Process new bill ------------------------------------------
+@app.post("/bill")
+def add_a_bill():
     title = request.form.get('title', '').strip()
     body = request.form.get('body', '').strip()
 
@@ -97,37 +97,37 @@ def add_a_note():
 
     with connect_db() as db:
         sql = """
-            INSERT INTO notes (title, body, pinned)
+            INSERT INTO bills (title, body, pinned)
             VALUES (?, ?, ?)
         """
         params = (title, body, pinned)
         db.execute(sql, params)
 
-        flash("Note added", "success")
+        flash("bill added", "success")
         return redirect("/")
 ```
 
-### Updating Notes
+### Updating bills
 
 ```python
-# Show note edit form with existing data --------------------
-@app.get("/note/<int:id>/edit")
-def show_note_edit_form(id):
+# Show bill edit form with existing data --------------------
+@app.get("/bill/<int:id>/edit")
+def show_bill_edit_form(id):
     with connect_db() as db:
         sql = """
             SELECT id, title, body, pinned, created
-            FROM notes
+            FROM bills
             WHERE id=?
         """
         params = (id,)
-        note = db.execute(sql, params).fetchone()
+        bill = db.execute(sql, params).fetchone()
 
-        return render_template("pages/note_form_edit.jinja", note=note)
+        return render_template("pages/bill_form_edit.jinja", bill=bill)
 
 
-# Process updated note --------------------------------------
-@app.post("/note/<int:id>")
-def update_a_note(id):
+# Process updated bill --------------------------------------
+@app.post("/bill/<int:id>")
+def update_a_bill(id):
     title = request.form.get('title', '').strip()
     body = request.form.get('body', '').strip()
 
@@ -138,60 +138,60 @@ def update_a_note(id):
 
     with connect_db() as db:
         sql = """
-            UPDATE notes
+            UPDATE bills
             SET title=?, body=?, pinned=?
             WHERE id=?
         """
         params = (title, body, pinned, id)
         db.execute(sql, params)
 
-        flash("Note updated", "success")
+        flash("bill updated", "success")
         return redirect("/")
 ```
 
-### Deleting Notes
+### Deleting bills
 
 ```python
-# Delete a note ---------------------------------------------
-@app.get("/note/<int:id>/delete")
-def delete_a_note(id):
+# Delete a bill ---------------------------------------------
+@app.get("/bill/<int:id>/delete")
+def delete_a_bill(id):
     with connect_db() as db:
         sql = """
-            DELETE FROM notes
+            DELETE FROM bills
             WHERE id=?
         """
         params = (id,)
         db.execute(sql, params)
 
-        flash("Note deleted", "success")
+        flash("bill deleted", "success")
         return redirect("/")
 ```
 
 
 ## Jinja Templates
 
-### notes_list.jinja
+### bills_list.jinja
 
 ```jinja
 {% raw %}{% block content %}
 
-    <section class="notes">
-        {% for note in notes %}
+    <section class="bills">
+        {% for bill in bills %}
 
-            <article class="note {{ 'pinned' if note.pinned }}">
+            <article class="bill {{ 'pinned' if bill.pinned }}">
 
                 <header>
-                    <h3>{{ note.title }}</h3>
-                    {{ "📌" if note.pinned }}
+                    <h3>{{ bill.title }}</h3>
+                    {{ "📌" if bill.pinned }}
                 </header>
 
-                <p><a href="/note/{{ note.id }}">View note...</a></p>
+                <p><a href="/bill/{{ bill.id }}">View bill...</a></p>
 
             </article>
 
         {% else %}
 
-            <p>No Notes!</p>
+            <p>No bills!</p>
 
         {% endfor %}
     </section>
@@ -199,25 +199,25 @@ def delete_a_note(id):
 {% endblock %}  {% endraw %}
 ```
 
-### note_single.jinja
+### bill_single.jinja
 
 ```jinja
 {% raw %}{% block content %}
 
-<article class="note {{ 'pinned' if note.pinned }}">
+<article class="bill {{ 'pinned' if bill.pinned }}">
 
     <header>
-        <h3>{{ note.title }}</h3>
-        {{ "📌" if note.pinned }}
+        <h3>{{ bill.title }}</h3>
+        {{ "📌" if bill.pinned }}
     </header>
 
-    <p>{{ note.body | paragraphs }}</p>
+    <p>{{ bill.body | paragraphs }}</p>
 
     <footer>
-        <span>Created on {{ note.created | local | format }}</span>
+        <span>Created on {{ bill.created | local | format }}</span>
 
-        <span><a href="/note/{{ note.id }}/edit">🖊️ Edit</a></span>
-        <span><a href="/note/{{ note.id }}/delete"
+        <span><a href="/bill/{{ bill.id }}/edit">🖊️ Edit</a></span>
+        <span><a href="/bill/{{ bill.id }}/delete"
                  onclick="return confirm('Really delete?')">🗑 Delete</a></span>
     </footer>
 
@@ -226,15 +226,15 @@ def delete_a_note(id):
 {% endblock %}  {% endraw %}
 ```
 
-### note_form.jinja
+### bill_form.jinja
 
 ```jinja
 {% raw %}{% block content %}
 
 <article>
 
-    <form method="post" action="/note">
-        <h3>New Note</h3>
+    <form method="post" action="/bill">
+        <h3>New bill</h3>
 
         <label>
             Title
@@ -248,10 +248,10 @@ def delete_a_note(id):
 
         <label>
             <input name="pin" type="checkbox">
-            Pin note?
+            Pin bill?
         </label>
 
-        <button>Add Note</button>
+        <button>Add bill</button>
     </form>
 
 </article>
@@ -259,32 +259,32 @@ def delete_a_note(id):
 {% endblock %}  {% endraw %}
 ```
 
-### note_form_edit.jinja
+### bill_form_edit.jinja
 
 ```jinja
 {% raw %}{% block content %}
 
 <article>
 
-    <form method="post" action="/note/{{ note.id }}">
-        <h3>Edit Note</h3>
+    <form method="post" action="/bill/{{ bill.id }}">
+        <h3>Edit bill</h3>
 
         <label>
             Title
-            <input name="title" type="text" value="{{ note.title }}" required>
+            <input name="title" type="text" value="{{ bill.title }}" required>
         </label>
 
         <label>
             Body
-            <textarea name="body" required>{{ note.body }}</textarea>
+            <textarea name="body" required>{{ bill.body }}</textarea>
         </label>
 
         <label>
-            <input name="pin" type="checkbox" {{ 'checked' if note.pinned }}>
-            Pin note?
+            <input name="pin" type="checkbox" {{ 'checked' if bill.pinned }}>
+            Pin bill?
         </label>
 
-        <button>Update Note</button>
+        <button>Update bill</button>
     </form>
 
 </article>

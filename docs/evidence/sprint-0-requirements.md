@@ -27,7 +27,7 @@ The implication is relevant to the project because that is what the end user ask
 
 ### Impact / Considerations
 
-I am considering on adding a balance system whereas if the end user clicked the "paid" button, the balance will go down corresponding to the cost of the bill.
+I am considering on adding a balance system whereas if the end user pressed the add button, the balance/budget will go down corresponding to the cost of the bill.
 
 
 

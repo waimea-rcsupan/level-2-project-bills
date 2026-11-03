@@ -27,15 +27,15 @@ Develop a design for the database and a UI prototype that simulates the key func
 
 Replace this text with notes regarding the DB design.
 
-![DB Design](<Screenshot 2026-08-17 105316.png>)
+![DB Design](screenshots/Drawsql.png)
 
 ### Required Data Input
 
-Replace this text with a description of what data will be input, and where / how it will be obtained.
+The data that needs to be inputed are the bills from the end user.
 
 ### Required Data Output
 
-Replace this text with a description of the outputs for the system - what types of data will be displayed?
+The data that is displayed are the bills from the end user.
 
 ### Required Data Processing
 

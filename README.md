@@ -1,4 +1,4 @@
-# ... Project
+# Bill Manager Project
 
 by Raven Supan
 
@@ -10,13 +10,11 @@ The app has the following key features:
 - Notes The bills
 - Shows how much the bill costs
 - you can add when it is due
-- ...
+- Updates the Remaining Budget corresponding with the bills
 
 ## Live Site
 
-https://level-2-project-bills.onrender.com
-
-
+This site is hosted on Render at [this link](https://level-2-project-bills.onrender.com)
 
 
 ## Supporting Documents
@@ -32,6 +30,7 @@ Project Evidence
 - [Review: Project Final Review](docs/evidence/system-review.md)
 
 
+*For easier reading, the docs are hosted as a [GH Pages site](https://waimea-rcsupan.github.io/level-2-project-bills/)*
 
 
 
@@ -43,8 +42,6 @@ Project Evidence
 - [Jinja2](https://jinja.palletsprojects.com/templates/) for page templating
 
 
-
-*For easier reading, the docs are hosted as a [GH Pages site](https://waimea-rcsupan.github.io/level-2-project-bills/)*
 
 
 ## Project Structure

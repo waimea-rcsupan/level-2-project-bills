@@ -27,7 +27,7 @@ Replace this text with notes about what you are testing, how you tested it, and 
 
 **PLACE SCREENSHOTS AND/OR ANIMATED GIFS OF THE TESTING HERE**
 
-![Placeholder](screenshots/placeholder.png)
+![GifTest](screenshots/Gif-test.gif)
 
 ### Changes / Improvements
 
